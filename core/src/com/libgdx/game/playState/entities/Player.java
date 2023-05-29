@@ -70,51 +70,58 @@ public class Player extends Entity {
 
     public void keyboardMovePlayer(float stateTime) {
         if (down && right) {
-            if (!rightCollide && !downCollide) {
+            if (rightCollide == false) {
                 x += (speed * Gdx.graphics.getDeltaTime()) / 1.41421356f;
+            }
+            if (downCollide == false) {
                 y -= (speed * Gdx.graphics.getDeltaTime()) / 1.41421356f;
             }
             currentFrame = rightAnimation.getKeyFrame(stateTime);
         } else if (down && left) {
-            if (!leftCollide && !downCollide) {
+            if (leftCollide == false) {
                 x -= (speed * Gdx.graphics.getDeltaTime()) / 1.41421356f;
+            }
+            if (downCollide == false) {
                 y -= (speed * Gdx.graphics.getDeltaTime()) / 1.41421356f;
             }
             currentFrame = leftAnimation.getKeyFrame(stateTime);
         } else if (top && right) {
-            if (!rightCollide && !topCollide) {
+            if (rightCollide == false) {
                 x += (speed * Gdx.graphics.getDeltaTime()) / 1.41421356f;
+            }
+            if (topCollide == false) {
                 y += (speed * Gdx.graphics.getDeltaTime()) / 1.41421356f;
             }
             currentFrame = rightAnimation.getKeyFrame(stateTime);
         } else if (top && left) {
-            if (!leftCollide && !topCollide) {
+            if (leftCollide == false) {
                 x -= (speed * Gdx.graphics.getDeltaTime()) / 1.41421356f;
+            }
+            if (topCollide == false) {
                 y += (speed * Gdx.graphics.getDeltaTime()) / 1.41421356f;
             }
             currentFrame = leftAnimation.getKeyFrame(stateTime);
         } else if (top) {
-            if (!topCollide) {
+            if (topCollide == false) {
                 y += speed * Gdx.graphics.getDeltaTime();
             }
             currentFrame = topAnimation.getKeyFrame(stateTime);
         } else if (down) {
-            if (!downCollide) {
+            if (downCollide == false) {
                 y -= speed * Gdx.graphics.getDeltaTime();
             }
             currentFrame = downAnimation.getKeyFrame(stateTime);
         } else if (left) {
-            if (!leftCollide) {
+            if (leftCollide == false) {
                 x -= speed * Gdx.graphics.getDeltaTime();
             }
             currentFrame = leftAnimation.getKeyFrame(stateTime);
         } else if (right) {
-            if (!rightCollide) {
+            if (rightCollide == false) {
                 x += speed * Gdx.graphics.getDeltaTime();
             }
             currentFrame = rightAnimation.getKeyFrame(stateTime);
         }
-
     }
 
     public void joystickMovePlayer(float stateTime) {
