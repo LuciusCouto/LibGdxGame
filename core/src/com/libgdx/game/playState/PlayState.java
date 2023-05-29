@@ -12,14 +12,13 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.libgdx.game.main.GameState;
+import com.libgdx.game.main.GameStateManager;
+import com.libgdx.game.main.Main;
 import com.libgdx.game.playState.entities.Player;
 import com.libgdx.game.playState.tile.CollisionChecker;
 import com.libgdx.game.playState.tile.MapRender;
 import com.libgdx.game.playState.ui.UI;
-
-import main.GameState;
-import main.GameStateManager;
-import main.Main;
 
 public class PlayState extends GameState {
 

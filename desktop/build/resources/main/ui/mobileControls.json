@@ -1,0 +1,15 @@
+{
+  "com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle": {
+    "default": {
+      "background": "joystick_bg",
+      "knob": "joystick_knob"
+    }
+  },
+
+  "com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
+    "default": {
+      "up": "debugButtonOff",
+      "down": "debugButtonOn"
+    }
+  }
+}

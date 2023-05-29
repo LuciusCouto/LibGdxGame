@@ -1,7 +1,7 @@
-package main;
+package com.libgdx.game.main;
 
 import com.badlogic.gdx.Game;
-import playState.PlayState;
+import com.libgdx.game.playState.PlayState;
 
 public class Main extends Game {
 	private GameStateManager gsm;
