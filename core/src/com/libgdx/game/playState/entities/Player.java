@@ -66,44 +66,53 @@ public class Player extends Entity {
         height = ps.tileSize;
         x = 10f * ps.tileSize;
         y = 10f * ps.tileSize;
-        speed = 4f;
+        speed = 4f * ps.tileSize;
     }
 
     public void movePlayer(float stateTime, Vector2 direction) {
         float speedModifier = (direction.x != 0 && direction.y != 0) ? 0.7071f : 1.0f; // Adjust speed for diagonal movement
 
+        // Normalizar o vetor de direção
+        if (direction.len2() > 1.0f) {
+            direction.nor();
+        }
+
         float deltaX = direction.x * speed * speedModifier * Gdx.graphics.getDeltaTime();
         float deltaY = direction.y * speed * speedModifier * Gdx.graphics.getDeltaTime();
 
+        // Verificar as colisões nas direções vertical e horizontal
         if (deltaY > 0 && !topCollide) {
-            y += deltaY;
-            currentFrame = topAnimation.getKeyFrame(stateTime);
+            body.setLinearVelocity(body.getLinearVelocity().x, speed * speedModifier);
         } else if (deltaY < 0 && !downCollide) {
-            y += deltaY;
-            currentFrame = downAnimation.getKeyFrame(stateTime);
+            body.setLinearVelocity(body.getLinearVelocity().x, -speed * speedModifier);
+        } else {
+            body.setLinearVelocity(body.getLinearVelocity().x, 0);
         }
 
         if (deltaX > 0 && !rightCollide) {
-            x += deltaX;
+            body.setLinearVelocity(speed * speedModifier, body.getLinearVelocity().y);
+        } else if (deltaX < 0 && !leftCollide) {
+            body.setLinearVelocity(-speed * speedModifier, body.getLinearVelocity().y);
+        } else {
+            body.setLinearVelocity(0, body.getLinearVelocity().y);
+        }
+
+        // Atualizar o frame com base na direção do movimento
+        if (deltaY > 0 && !topCollide) {
+            currentFrame = topAnimation.getKeyFrame(stateTime);
+        } else if (deltaY < 0 && !downCollide) {
+            currentFrame = downAnimation.getKeyFrame(stateTime);
+        } if (deltaX > 0 && !rightCollide) {
             currentFrame = rightAnimation.getKeyFrame(stateTime);
         } else if (deltaX < 0 && !leftCollide) {
-            x += deltaX;
             currentFrame = leftAnimation.getKeyFrame(stateTime);
         }
 
-        body.setTransform(x + width / 2, y + height / 2, 0);
-
-        if (x < 0) {
-            x = 0;
-        } else if (x + width > ps.worldWidth) {
-            x = ps.worldWidth - width;
-        }
-        if (y < 0) {
-            y = 0;
-        } else if (y + height > ps.worldHeight) {
-            y = ps.worldHeight - height;
-        }
+        // Atualizar a posição do jogador com base no corpo
+        x = body.getPosition().x - width / 2;
+        y = body.getPosition().y - height / 2;
     }
+
 
     public void update() {
         stateTime += 0.25f * Gdx.graphics.getDeltaTime();

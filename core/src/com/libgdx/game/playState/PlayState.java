@@ -65,8 +65,8 @@ public class PlayState extends GameState {
 
 		mapR = new MapRender(this);
 
-		worldWidth = mapR.tiledMap.getProperties().get("width", Integer.class) * 1f;
-		worldHeight = mapR.tiledMap.getProperties().get("height", Integer.class) * 1f;
+		worldWidth = mapR.tiledMap.getProperties().get("width", Integer.class);
+		worldHeight = mapR.tiledMap.getProperties().get("height", Integer.class);
 
 
 		player = new Player(this);
