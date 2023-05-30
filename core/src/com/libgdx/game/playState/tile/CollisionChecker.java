@@ -4,9 +4,23 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.physics.box2d.*;
 import com.libgdx.game.playState.PlayState;
 
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.physics.box2d.*;
+import com.libgdx.game.playState.PlayState;
+import com.libgdx.game.playState.entities.Player;
+
 public class CollisionChecker {
-    public CollisionChecker(final PlayState ps) {
-        TiledMapTileLayer layer = (TiledMapTileLayer) ps.mapR.tiledMap.getLayers().get("bgd");
+    private PlayState ps;
+    private TiledMapTileLayer layer;
+
+    public CollisionChecker(PlayState ps) {
+        this.ps = ps;
+        this.layer = (TiledMapTileLayer) ps.mapR.tiledMap.getLayers().get("bgd");
+        createCollisionBodies();
+        setupContactListener();
+    }
+
+    private void createCollisionBodies() {
         BodyDef bdef = new BodyDef();
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
@@ -23,53 +37,53 @@ public class CollisionChecker {
 
                     shape.setAsBox(0.5f * ps.tileSize, 0.5f * ps.tileSize);
                     fdef.shape = shape;
-                    ps.world.createBody(bdef).createFixture(fdef).setUserData("bgd"); // Defina o UserData como "bgd" para identificar a colisão com os tiles do mapa
+                    ps.world.createBody(bdef).createFixture(fdef).setUserData("bgd");
                 }
             }
         }
 
-        // Adicione um ContactListener ao mundo Box2D
+        shape.dispose();
+    }
+
+    private void setupContactListener() {
         ps.world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
                 Fixture fixtureA = contact.getFixtureA();
                 Fixture fixtureB = contact.getFixtureB();
 
-                // Verifique se um dos fixtures é o jogador
-                if (fixtureA.getBody().getUserData() == ps.player || fixtureB.getBody().getUserData() == ps.player) {
-                    // Verifique qual lado do jogador colidiu
+                Player player = ps.player;
+
+                if (fixtureA.getBody().getUserData() == player || fixtureB.getBody().getUserData() == player) {
                     WorldManifold manifold = contact.getWorldManifold();
-                    if (manifold.getNormal().x > 0) {
-                        ps.player.rightCollide = true;
+                    float normalX = manifold.getNormal().x;
+                    float normalY = manifold.getNormal().y;
+
+                    if (normalX > 0) {
+                        player.setRightCollide(true);
+                    } else if (normalX < 0) {
+                        player.setLeftCollide(true);
                     }
-                    if (manifold.getNormal().x < 0) {
-                        ps.player.leftCollide = true;
-                    }
-                    if (manifold.getNormal().y > 0) {
-                        ps.player.topCollide = true;
-                    }
-                    if (manifold.getNormal().y < 0) {
-                        ps.player.downCollide = true;
+
+                    if (normalY > 0) {
+                        player.setTopCollide(true);
+                    } else if (normalY < 0) {
+                        player.setDownCollide(true);
                     }
                 }
             }
 
             @Override
             public void endContact(Contact contact) {
-                ps.player.topCollide = false;
-                ps.player.downCollide = false;
-                ps.player.leftCollide = false;
-                ps.player.rightCollide = false;
+                ps.player.setCollide(false);
             }
 
             @Override
             public void preSolve(Contact contact, Manifold oldManifold) {
-
             }
 
             @Override
             public void postSolve(Contact contact, ContactImpulse impulse) {
-
             }
         });
     }

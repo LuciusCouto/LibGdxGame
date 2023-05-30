@@ -90,7 +90,7 @@ repeat: none
   index: -1
 013
   rotate: false
-  xy: 102, 2
+  xy: 102, 22
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
@@ -245,13 +245,6 @@ repeat: none
 035
   rotate: false
   xy: 82, 82
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-New Piskel (2)
-  rotate: false
-  xy: 102, 22
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -14,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.libgdx.game.playState.PlayState;
 
 public class Player extends Entity {
-    PlayState ps;
+    private PlayState ps;
     private TextureAtlas atlas;
     private Animation<AtlasRegion> downAnimation;
     private Animation<AtlasRegion> topAnimation;
@@ -22,10 +23,10 @@ public class Player extends Entity {
     private Animation<AtlasRegion> rightAnimation;
     private float stateTime;
     private TextureRegion currentFrame;
-    public Body body;
+    private Body body;
 
-    public Player(PlayState gp) {
-        this.ps = gp;
+    public Player(PlayState ps) {
+        this.ps = ps;
         setDefaultValues();
 
         atlas = new TextureAtlas(Gdx.files.internal("player/player.atlas"));
@@ -65,91 +66,29 @@ public class Player extends Entity {
         height = ps.tileSize;
         x = 10f * ps.tileSize;
         y = 10f * ps.tileSize;
-        speed = 200f;
+        speed = 150f;
     }
 
-    public void keyboardMovePlayer(float stateTime) {
-        if (down && right) {
-            if (rightCollide == false) {
-                x += (speed * Gdx.graphics.getDeltaTime()) / 1.41421356f;
-            }
-            if (downCollide == false) {
-                y -= (speed * Gdx.graphics.getDeltaTime()) / 1.41421356f;
-            }
-            currentFrame = rightAnimation.getKeyFrame(stateTime);
-        } else if (down && left) {
-            if (leftCollide == false) {
-                x -= (speed * Gdx.graphics.getDeltaTime()) / 1.41421356f;
-            }
-            if (downCollide == false) {
-                y -= (speed * Gdx.graphics.getDeltaTime()) / 1.41421356f;
-            }
-            currentFrame = leftAnimation.getKeyFrame(stateTime);
-        } else if (top && right) {
-            if (rightCollide == false) {
-                x += (speed * Gdx.graphics.getDeltaTime()) / 1.41421356f;
-            }
-            if (topCollide == false) {
-                y += (speed * Gdx.graphics.getDeltaTime()) / 1.41421356f;
-            }
-            currentFrame = rightAnimation.getKeyFrame(stateTime);
-        } else if (top && left) {
-            if (leftCollide == false) {
-                x -= (speed * Gdx.graphics.getDeltaTime()) / 1.41421356f;
-            }
-            if (topCollide == false) {
-                y += (speed * Gdx.graphics.getDeltaTime()) / 1.41421356f;
-            }
-            currentFrame = leftAnimation.getKeyFrame(stateTime);
-        } else if (top) {
-            if (topCollide == false) {
-                y += speed * Gdx.graphics.getDeltaTime();
-            }
-            currentFrame = topAnimation.getKeyFrame(stateTime);
-        } else if (down) {
-            if (downCollide == false) {
-                y -= speed * Gdx.graphics.getDeltaTime();
-            }
-            currentFrame = downAnimation.getKeyFrame(stateTime);
-        } else if (left) {
-            if (leftCollide == false) {
-                x -= speed * Gdx.graphics.getDeltaTime();
-            }
-            currentFrame = leftAnimation.getKeyFrame(stateTime);
-        } else if (right) {
-            if (rightCollide == false) {
-                x += speed * Gdx.graphics.getDeltaTime();
-            }
-            currentFrame = rightAnimation.getKeyFrame(stateTime);
-        }
-    }
+    public void movePlayer(float stateTime, Vector2 direction) {
+        float speedModifier = (direction.x != 0 && direction.y != 0) ? 0.7071f : 1.0f; // Adjust speed for diagonal movement
 
-    public void joystickMovePlayer(float stateTime) {
-        if (ps.ui.mcUI.touchpad.getKnobPercentY() > 0 && Math.abs(ps.ui.mcUI.touchpad.getKnobPercentY()) >= Math.abs(ps.ui.mcUI.touchpad.getKnobPercentX())) {
+        float deltaX = direction.x * speed * speedModifier * Gdx.graphics.getDeltaTime();
+        float deltaY = direction.y * speed * speedModifier * Gdx.graphics.getDeltaTime();
+
+        if (deltaY > 0 && !topCollide) {
+            y += deltaY;
             currentFrame = topAnimation.getKeyFrame(stateTime);
-        }
-        if (ps.ui.mcUI.touchpad.getKnobPercentY() < 0 && Math.abs(ps.ui.mcUI.touchpad.getKnobPercentY()) >= Math.abs(ps.ui.mcUI.touchpad.getKnobPercentX())) {
+        } else if (deltaY < 0 && !downCollide) {
+            y += deltaY;
             currentFrame = downAnimation.getKeyFrame(stateTime);
         }
-        if (ps.ui.mcUI.touchpad.getKnobPercentX() > 0 && Math.abs(ps.ui.mcUI.touchpad.getKnobPercentX()) >= Math.abs(ps.ui.mcUI.touchpad.getKnobPercentY())) {
+
+        if (deltaX > 0 && !rightCollide) {
+            x += deltaX;
             currentFrame = rightAnimation.getKeyFrame(stateTime);
-        }
-        if (ps.ui.mcUI.touchpad.getKnobPercentX() < 0 && Math.abs(ps.ui.mcUI.touchpad.getKnobPercentX()) >= Math.abs(ps.ui.mcUI.touchpad.getKnobPercentY())) {
+        } else if (deltaX < 0 && !leftCollide) {
+            x += deltaX;
             currentFrame = leftAnimation.getKeyFrame(stateTime);
-        }
-
-        x += ps.ui.mcUI.touchpad.getKnobPercentX() * speed * Gdx.graphics.getDeltaTime();
-        y += ps.ui.mcUI.touchpad.getKnobPercentY() * speed * Gdx.graphics.getDeltaTime();
-    }
-
-    public void update() {
-        stateTime += 0.25f * Gdx.graphics.getDeltaTime();
-
-        if (ps.ui.mcUI.touchpad.isTouchFocusTarget() == false) {
-            keyboardMovePlayer(stateTime);
-        }
-        if (!top && !down && !left && !right) {
-            joystickMovePlayer(stateTime);
         }
 
         body.setTransform(x + width / 2, y + height / 2, 0);
@@ -164,6 +103,72 @@ public class Player extends Entity {
         } else if (y + height > ps.worldHeight) {
             y = ps.worldHeight - height;
         }
+    }
+
+    public void update() {
+        stateTime += 0.25f * Gdx.graphics.getDeltaTime();
+
+        if (ps.ui.mcUI.touchpad.isTouchFocusTarget()) {
+            Vector2 direction = new Vector2(ps.ui.mcUI.touchpad.getKnobPercentX(), ps.ui.mcUI.touchpad.getKnobPercentY());
+            movePlayer(stateTime, direction);
+        } else {
+            Vector2 direction = new Vector2(0, 0);
+            if (left) {
+                direction.x = -1;
+            } else if (right) {
+                direction.x = 1;
+            }
+            if (down) {
+                direction.y = -1;
+            } else if (top) {
+                direction.y = 1;
+            }
+            movePlayer(stateTime, direction);
+        }
+    }
+
+    // Métodos de colisão
+    public void setRightCollide(boolean collide) {
+        rightCollide = collide;
+        if (collide) {
+            // Lógica específica para colisão à direita
+            // Por exemplo, diminuir a velocidade do jogador quando andar na diagonal
+            if (topCollide || downCollide) {
+                body.setLinearVelocity(body.getLinearVelocity().x, body.getLinearVelocity().y * 0.5f);
+            }
+        }
+    }
+
+    public void setLeftCollide(boolean collide) {
+        leftCollide = collide;
+        if (collide) {
+            // Lógica específica para colisão à esquerda
+            // Por exemplo, diminuir a velocidade do jogador quando andar na diagonal
+            if (topCollide || downCollide) {
+                body.setLinearVelocity(body.getLinearVelocity().x, body.getLinearVelocity().y * 0.5f);
+            }
+        }
+    }
+
+    public void setTopCollide(boolean collide) {
+        topCollide = collide;
+        if (collide) {
+            // Lógica específica para colisão superior
+        }
+    }
+
+    public void setDownCollide(boolean collide) {
+        downCollide = collide;
+        if (collide) {
+            // Lógica específica para colisão inferior
+        }
+    }
+
+    public void setCollide(boolean collide) {
+        topCollide = collide;
+        downCollide = collide;
+        leftCollide = collide;
+        rightCollide = collide;
     }
 
     public void render(SpriteBatch batch) {
