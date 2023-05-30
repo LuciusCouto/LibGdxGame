@@ -27,8 +27,8 @@ public class DebugUI {
         table = new Table();
         table.top();
         table.left();
-        table.padTop(10);
-        table.padLeft(10);
+        table.padTop(10f);
+        table.padLeft(10f);
         table.setFillParent(true);
 
         framesPerSecond = new Label("FPS: " + Gdx.graphics.getFramesPerSecond(), style);

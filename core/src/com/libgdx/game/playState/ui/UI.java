@@ -32,11 +32,11 @@ public class UI {
         this.sb = sb;
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/MaruMonica.ttf"));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 40;
+        parameter.size = 30;
         font = generator.generateFont(parameter);
         Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
 
-        viewport = new ExtendViewport(ps.worldWidth, ps.worldHeight, new OrthographicCamera());
+        viewport = new ExtendViewport(1080, 600, new OrthographicCamera());
         stage = new Stage(viewport, sb);
 
         dUI = new DebugUI(viewport, sb, style, this);

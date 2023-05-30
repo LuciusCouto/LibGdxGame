@@ -66,7 +66,7 @@ public class Player extends Entity {
         height = ps.tileSize;
         x = 10f * ps.tileSize;
         y = 10f * ps.tileSize;
-        speed = 150f;
+        speed = 4f;
     }
 
     public void movePlayer(float stateTime, Vector2 direction) {

@@ -15,7 +15,7 @@ public class MapRender {
     public MapRender(PlayState ps) {
         this.ps = ps;
         tiledMap = new TmxMapLoader().load("maps/map01.tmx");
-        renderer = new OrthogonalTiledMapRenderer(tiledMap, ps.tileSize /16f);
+        renderer = new OrthogonalTiledMapRenderer(tiledMap, ps.tileSize / 16f);
 
     }
 

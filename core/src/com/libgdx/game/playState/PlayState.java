@@ -35,7 +35,7 @@ public class PlayState extends GameState {
 	SpriteBatch worldBatch;
 	public int worldX;
 	public int worldY;
-	public int tileSize;
+	public float tileSize;
 	public float worldWidth;
 	public float worldHeight;
 	public int playState = 0;
@@ -53,7 +53,7 @@ public class PlayState extends GameState {
 		world = new World(new Vector2(0, 0), true);
 		debugRenderer = new Box2DDebugRenderer();
 		main = new Main();
-		tileSize = 48;
+		tileSize = 1f;
 		worldWidth = main.wordlWidth;
 		worldHeight = main.worldHeight;
 		camera = new OrthographicCamera(worldWidth, worldHeight);
@@ -65,8 +65,8 @@ public class PlayState extends GameState {
 
 		mapR = new MapRender(this);
 
-		worldWidth = mapR.tiledMap.getProperties().get("width", Integer.class) * 48f;
-		worldHeight = mapR.tiledMap.getProperties().get("height", Integer.class) * 48f;
+		worldWidth = mapR.tiledMap.getProperties().get("width", Integer.class) * 1f;
+		worldHeight = mapR.tiledMap.getProperties().get("height", Integer.class) * 1f;
 
 
 		player = new Player(this);
