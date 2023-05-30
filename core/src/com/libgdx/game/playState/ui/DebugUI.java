@@ -33,18 +33,12 @@ public class DebugUI {
 
         framesPerSecond = new Label("FPS: " + Gdx.graphics.getFramesPerSecond(), style);
         deltaTime = new Label("Tempo Delta: " + Gdx.graphics.getDeltaTime(), style);
-        worldX = new Label("Mundo X: " + ui.ps.worldX, style);
-        worldY = new Label("Mundo Y: " + ui.ps.worldY, style);
-        col = new Label("Coluna: " + (int) (ui.ps.worldX / ui.ps.tileSize), style);
-        row = new Label("Fileira: " + (int) (ui.ps.worldY / ui.ps.tileSize), style);
+        col = new Label("Coluna: " + ui.ps.worldX, style);
+        row = new Label("Fileira: " + ui.ps.worldY, style);
 
         table.add(framesPerSecond).left();
         table.row();
         table.add(deltaTime).left();
-        table.row();
-        table.add(worldX).left();
-        table.row();
-        table.add(worldY).left();
         table.row();
         table.add(col).left();
         table.row();
@@ -56,10 +50,8 @@ public class DebugUI {
     public void render() {
         framesPerSecond.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
         deltaTime.setText("Tempo Delta: " + Gdx.graphics.getDeltaTime());
-        worldX.setText("Mundo X: " + ui.ps.worldX);
-        worldY.setText("Mundo Y: " + ui.ps.worldY);
-        col.setText("Coluna: " + (int) (ui.ps.worldX / ui.ps.tileSize));
-        row.setText("Coluna: " + (int) (ui.ps.worldY / ui.ps.tileSize));
+        col.setText("Coluna: " + ui.ps.worldX);
+        row.setText("Fileira: " + ui.ps.worldY);
         stage.draw();
     }
 

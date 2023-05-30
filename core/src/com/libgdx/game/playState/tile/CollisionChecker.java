@@ -23,23 +23,27 @@ public class CollisionChecker {
     }
 
     private void createBorderMapCollision() {
+        // Definir os vértices do polígono
+        Vector2[] vertices = new Vector2[4];
+        vertices[0] = new Vector2(0, 0);
+        vertices[1] = new Vector2(ps.worldWidth, 0);
+        vertices[2] = new Vector2(ps.worldWidth, ps.worldHeight);
+        vertices[3] = new Vector2(0, ps.worldHeight);
+
+        // Criar o corpo da borda
         ChainShape borderShape = new ChainShape();
-        borderShape.createLoop(new Vector2[] {
-                new Vector2(0, 0),
-                new Vector2(ps.worldWidth, 0),
-                new Vector2(ps.worldWidth, ps.worldHeight),
-                new Vector2(0, ps.worldHeight)
-        });
+        borderShape.createLoop(vertices);
 
-        // Criar uma definição de corpo para a borda
-        BodyDef borderBodyDef = new BodyDef();
-        borderBodyDef.type = BodyDef.BodyType.StaticBody;
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = borderShape;
 
-        // Criar o corpo da borda usando a definição e a forma de colisão
-        Body borderBody = ps.world.createBody(borderBodyDef);
-        borderBody.createFixture(borderShape, 0); // Densidade 0 para tornar o objeto estático
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
 
-        // Limpar a forma de colisão, pois ela não será mais utilizada
+        Body borderBody = ps.world.createBody(bodyDef);
+        borderBody.createFixture(fixtureDef);
+
+        // Limpar a memória dos vértices
         borderShape.dispose();
     }
 
