@@ -23,28 +23,30 @@ public class CollisionChecker {
     }
 
     private void createBorderMapCollision() {
-        // Definir os vértices do polígono
-        Vector2[] vertices = new Vector2[4];
-        vertices[0] = new Vector2(0, 0);
-        vertices[1] = new Vector2(ps.worldWidth, 0);
-        vertices[2] = new Vector2(ps.worldWidth, ps.worldHeight);
-        vertices[3] = new Vector2(0, ps.worldHeight);
+        // Crie um objeto BodyDef para a borda
+        BodyDef edgeBodyDef = new BodyDef();
+        edgeBodyDef.type = BodyDef.BodyType.StaticBody; // Corpo estático, não sofre influência das forças
 
-        // Criar o corpo da borda
-        ChainShape borderShape = new ChainShape();
-        borderShape.createLoop(vertices);
+// Crie uma instância do corpo de borda
+        Body edgeBody = ps.world.createBody(edgeBodyDef);
 
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = borderShape;
+// Crie uma forma de borda (EdgeShape) para cada segmento de borda
+        EdgeShape edgeShape = new EdgeShape();
 
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
+// Crie as bordas superiores e inferiores
+        edgeShape.set(new Vector2(0, 0), new Vector2(ps.worldWidth, 0)); // Borda superior
+        edgeBody.createFixture(edgeShape, 0); // Adicione a borda superior ao corpo de borda
+        edgeShape.set(new Vector2(0, ps.worldHeight), new Vector2(ps.worldWidth, ps.worldHeight)); // Borda inferior
+        edgeBody.createFixture(edgeShape, 0); // Adicione a borda inferior ao corpo de borda
 
-        Body borderBody = ps.world.createBody(bodyDef);
-        borderBody.createFixture(fixtureDef);
+// Crie as bordas laterais
+        edgeShape.set(new Vector2(0, 0), new Vector2(0, ps.worldHeight)); // Borda esquerda
+        edgeBody.createFixture(edgeShape, 0); // Adicione a borda esquerda ao corpo de borda
+        edgeShape.set(new Vector2(ps.worldWidth, 0), new Vector2(ps.worldWidth, ps.worldHeight)); // Borda direita
+        edgeBody.createFixture(edgeShape, 0); // Adicione a borda direita ao corpo de borda
 
-        // Limpar a memória dos vértices
-        borderShape.dispose();
+// Libere os recursos da forma de borda
+        edgeShape.dispose();
     }
 
     private void createCollisionBodies() {
