@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class DebugUI {
 
+    public boolean showCollisionBox = false;
     UI ui;
     Stage stage;
     Label framesPerSecond;
@@ -48,11 +49,17 @@ public class DebugUI {
     }
 
     public void render() {
-        framesPerSecond.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
-        deltaTime.setText("Tempo Delta: " + Gdx.graphics.getDeltaTime());
-        col.setText("Coluna: " + ui.ps.worldX);
-        row.setText("Fileira: " + ui.ps.worldY);
-        stage.draw();
+        if (showDebug == true) {
+            framesPerSecond.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
+            deltaTime.setText("Tempo Delta: " + Gdx.graphics.getDeltaTime());
+            col.setText("Coluna: " + ui.ps.worldX);
+            row.setText("Fileira: " + ui.ps.worldY);
+            stage.draw();
+        }
+
+        if (showCollisionBox) {
+            ui.ps.debugRenderer.render(ui.ps.world, ui.ps.camera.combined);
+        }
     }
 
     public void resize(int width, int height) {

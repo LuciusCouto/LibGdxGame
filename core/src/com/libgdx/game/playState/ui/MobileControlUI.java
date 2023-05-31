@@ -1,6 +1,5 @@
 package com.libgdx.game.playState.ui;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -19,6 +18,7 @@ import com.libgdx.game.playState.PlayState;
 
 public class MobileControlUI {
     PlayState ps;
+    UI ui;
     public Touchpad touchpad;
     TextureAtlas atlas;
     public Stage stage;
@@ -28,28 +28,27 @@ public class MobileControlUI {
     ImageButton debugButton;
     public Table table;
 
-    public MobileControlUI(Viewport viewport, SpriteBatch sb, final PlayState ps) {
+    public MobileControlUI(Viewport viewport, SpriteBatch sb, final PlayState ps, UI ui) {
+        this.ui = ui;
         this.ps = ps;
         this.stage = new Stage(viewport, sb);
-
 
         atlas = new TextureAtlas(Gdx.files.internal("ui/mobileControls.atlas"));
         skin = new Skin(Gdx.files.internal("ui/mobileControls.json"), atlas);
         table = new Table();
-        table.setWidth(Gdx.graphics.getWidth());
-        table.center();
-        table.top();
-        table.padTop(10);
         table.setFillParent(true);
 
         debugButton = new ImageButton(skin);
-        table.add(debugButton).size(50, 50);
+        table.add(debugButton).size(50, 50).top().padTop(10).center();
+
+        table.row();
 
         touchpad = new Touchpad(20, skin);
-        touchpad.setBounds(150, 150, 200, 200);
+        table.add(touchpad).size(200).bottom().padBottom(150).left().padLeft(150);
+
         p = new Vector2();
         b = new Rectangle();
-        if (Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS) {
+        //if (Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS) {
             stage.addListener(new InputListener() {
 
                 Vector2 p = new Vector2();
@@ -77,23 +76,43 @@ public class MobileControlUI {
                     touchpad.addAction(Actions.moveTo(150, 150, 0.15f));
                 }
             });
-        }
+        //}
 
         debugButton.addListener(new InputListener() {
+            private boolean isButtonPressed = false;
+            private int x;
+            private int y;
+
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (ps.ui.dUI.showDebug == false) {
-                    ps.ui.dUI.showDebug = true;
-                } else {
-                    ps.ui.dUI.showDebug = false;
+                // Verifica se o botão foi pressionado
+                if (debugButton.isPressed()) {
+                    isButtonPressed = true;
                 }
+
+                x = x;
+
+                y = y;
+
                 return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                // Se o botão estava sendo pressionado e o toque ocorreu no lado direito da tela e abaixo do botão
+                if (isButtonPressed && this.x >= table.getWidth() / 2 && this.y >= debugButton.getY() + 10) {
+                    // Ativa a função desejada
+                    ui.dUI.showCollisionBox = !ui.dUI.showCollisionBox;
+                } else {
+                    ui.dUI.showDebug = !ui.dUI.showDebug;
+                }
+
+                // Redefine as variáveis para os próximos toques
+                isButtonPressed = false;
             }
         });
 
 
-        table.add(touchpad);
-        stage.addActor(touchpad);
         stage.addActor(table);
     }
 

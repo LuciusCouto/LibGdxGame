@@ -6,8 +6,8 @@ import com.libgdx.game.playState.PlayState;
 public class Main extends Game {
 	private GameStateManager gsm;
 
-	public final float wordlWidth = 22f;
-	public final float worldHeight = 6f;
+	public float wordlWidth = 22f;
+	public float worldHeight = 6f;
 
 	public void create () {
 		gsm = new GameStateManager(this);

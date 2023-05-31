@@ -5,7 +5,8 @@ import com.badlogic.gdx.InputProcessor;
 
 public class KeyHandler implements InputProcessor {
 
-    PlayState ps;
+    private boolean f3Pressed = false;
+    private PlayState ps;
 
     public KeyHandler(PlayState ps) {
         this.ps = ps;
@@ -26,18 +27,11 @@ public class KeyHandler implements InputProcessor {
             if (keycode == Input.Keys.A || keycode == Input.Keys.LEFT) {
                 ps.player.left = true;
             }
-            if (keycode == Input.Keys.F3 || keycode == Input.Keys.T) {
-               if (ps.ui.dUI.showDebug == true) {
-                   ps.ui.dUI.showDebug = false;
-               } else {
-                   ps.ui.dUI.showDebug = true;
-               }
-            }
-            if (keycode == Input.Keys.PAGE_UP) {
-                ps.camera.zoom -= 0.1;
-            }
-            if (keycode == Input.Keys.PAGE_DOWN) {
-                ps.camera.zoom += 0.1;
+
+            if (keycode == Input.Keys.F3) {
+                f3Pressed = true;
+            } else if (f3Pressed && keycode == Input.Keys.B) {
+                ps.ui.dUI.showCollisionBox = !ps.ui.dUI.showCollisionBox;
             }
         }
         return true;
@@ -57,6 +51,13 @@ public class KeyHandler implements InputProcessor {
             }
             if (keycode == Input.Keys.A || keycode == Input.Keys.LEFT) {
                 ps.player.left = false;
+            }
+
+            if (keycode == Input.Keys.F3) {
+                if (!ps.ui.dUI.showCollisionBox) {
+                    ps.ui.dUI.showDebug = !ps.ui.dUI.showDebug;
+                }
+                f3Pressed = false;
             }
         }
         return true;

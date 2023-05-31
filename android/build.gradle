@@ -1,4 +1,12 @@
 android {
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\luciu\\Documents\\Lucius\\Meus Jogos e Apps\\Java\\LibGdx Game\\LibGdxGame Key.jks')
+            storePassword 'Sete7070+'
+            keyAlias 'key'
+            keyPassword 'Sete7070+'
+        }
+    }
     namespace "com.libgdx.game"
     buildToolsVersion "33.0.2"
     compileSdkVersion 33
@@ -21,15 +29,21 @@ android {
     }
     defaultConfig {
         applicationId "com.libgdx.game"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 33
         versionCode 1
         versionName "1.0"
+        signingConfig signingConfigs.debug
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+        debug {
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
 }

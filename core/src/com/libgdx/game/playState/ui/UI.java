@@ -1,6 +1,5 @@
 package com.libgdx.game.playState.ui;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -40,17 +39,15 @@ public class UI {
         stage = new Stage(viewport, sb);
 
         dUI = new DebugUI(viewport, sb, style, this);
-        mcUI = new MobileControlUI(viewport, sb, ps);
+        mcUI = new MobileControlUI(viewport, sb, ps, this);
     }
 
     public void render() {
         sb.setProjectionMatrix(stage.getCamera().combined);
-        if (Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS) {
+        //if (Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS) {
             mcUI.render();
-        }
-        if (dUI.showDebug == true) {
-            dUI.render();
-        }
+       //}
+        dUI.render();
     }
 
     public void resize(int width, int height) {

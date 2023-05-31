@@ -1,0 +1,8 @@
+com.libgdx.game.android-pngs-0 C:\Users\luciu\eclipse-workspace\LibGdxGame\android\build\generated\res\pngs\release
+com.libgdx.game.android-resValues-1 C:\Users\luciu\eclipse-workspace\LibGdxGame\android\build\generated\res\resValues\release
+com.libgdx.game.android-rs-2 C:\Users\luciu\eclipse-workspace\LibGdxGame\android\build\generated\res\rs\release
+com.libgdx.game.android-mergeReleaseResources-3 C:\Users\luciu\eclipse-workspace\LibGdxGame\android\build\intermediates\incremental\release\mergeReleaseResources\merged.dir
+com.libgdx.game.android-mergeReleaseResources-4 C:\Users\luciu\eclipse-workspace\LibGdxGame\android\build\intermediates\incremental\release\mergeReleaseResources\stripped.dir
+com.libgdx.game.android-merged_res-5 C:\Users\luciu\eclipse-workspace\LibGdxGame\android\build\intermediates\merged_res\release
+com.libgdx.game.android-android-6 C:\Users\luciu\eclipse-workspace\LibGdxGame\android\res
+com.libgdx.game.android-release-7 C:\Users\luciu\eclipse-workspace\LibGdxGame\android\src\release\res

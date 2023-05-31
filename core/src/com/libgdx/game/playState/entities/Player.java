@@ -66,12 +66,11 @@ public class Player extends Entity {
         height = ps.tileSize;
         x = 10f * ps.tileSize;
         y = 10f * ps.tileSize;
-        speed = 4f;
+        speed = 4f * ps.tileSize;
     }
 
     public void movePlayer(float stateTime, Vector2 direction) {
         float speedModifier = (direction.x != 0 && direction.y != 0) ? 0.7071f : 1.0f; // Adjust speed for diagonal movement
-        float maxSpeed = 4f;
 
         // Normalizar o vetor de direção
         if (direction.len2() > 1.0f) {
@@ -96,14 +95,6 @@ public class Player extends Entity {
             body.setLinearVelocity(-speed * speedModifier, body.getLinearVelocity().y);
         } else {
             body.setLinearVelocity(0, body.getLinearVelocity().y);
-        }
-
-        Vector2 velocity = body.getLinearVelocity();
-        float currentSpeed = velocity.len();
-        if (currentSpeed > maxSpeed) {
-            float factor = maxSpeed / currentSpeed;
-            velocity.scl(factor);
-            body.setLinearVelocity(velocity);
         }
 
 

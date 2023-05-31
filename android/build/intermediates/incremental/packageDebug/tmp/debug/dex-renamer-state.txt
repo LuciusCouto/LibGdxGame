@@ -1,0 +1,4 @@
+#Wed May 31 18:33:10 BRT 2023
+base.0=C\:\\Users\\luciu\\eclipse-workspace\\LibGdxGame\\android\\build\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

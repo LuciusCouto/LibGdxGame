@@ -27,25 +27,25 @@ public class CollisionChecker {
         BodyDef edgeBodyDef = new BodyDef();
         edgeBodyDef.type = BodyDef.BodyType.StaticBody; // Corpo estático, não sofre influência das forças
 
-// Crie uma instância do corpo de borda
+        // Crie uma instância do corpo de borda
         Body edgeBody = ps.world.createBody(edgeBodyDef);
 
-// Crie uma forma de borda (EdgeShape) para cada segmento de borda
+        // Crie uma forma de borda (EdgeShape) para cada segmento de borda
         EdgeShape edgeShape = new EdgeShape();
 
-// Crie as bordas superiores e inferiores
+        // Crie as bordas superiores e inferiores
         edgeShape.set(new Vector2(0, 0), new Vector2(ps.worldWidth, 0)); // Borda superior
-        edgeBody.createFixture(edgeShape, 0); // Adicione a borda superior ao corpo de borda
+        edgeBody.createFixture(edgeShape, 0).setRestitution(0.2f); // Adicione a borda superior ao corpo de borda
         edgeShape.set(new Vector2(0, ps.worldHeight), new Vector2(ps.worldWidth, ps.worldHeight)); // Borda inferior
-        edgeBody.createFixture(edgeShape, 0); // Adicione a borda inferior ao corpo de borda
+        edgeBody.createFixture(edgeShape, 0).setRestitution(0.2f); // Adicione a borda inferior ao corpo de borda
 
-// Crie as bordas laterais
+        // Crie as bordas laterais
         edgeShape.set(new Vector2(0, 0), new Vector2(0, ps.worldHeight)); // Borda esquerda
-        edgeBody.createFixture(edgeShape, 0); // Adicione a borda esquerda ao corpo de borda
+        edgeBody.createFixture(edgeShape, 0).setRestitution(0.2f); // Adicione a borda esquerda ao corpo de borda
         edgeShape.set(new Vector2(ps.worldWidth, 0), new Vector2(ps.worldWidth, ps.worldHeight)); // Borda direita
-        edgeBody.createFixture(edgeShape, 0); // Adicione a borda direita ao corpo de borda
+        edgeBody.createFixture(edgeShape, 0).setRestitution(0.2f); // Adicione a borda direita ao corpo de borda
 
-// Libere os recursos da forma de borda
+        // Libere os recursos da forma de borda
         edgeShape.dispose();
     }
 
@@ -66,6 +66,7 @@ public class CollisionChecker {
 
                     shape.setAsBox(0.5f * ps.tileSize, 0.5f * ps.tileSize);
                     fdef.shape = shape;
+                    fdef.restitution = 0.15f;
                     ps.world.createBody(bdef).createFixture(fdef).setUserData("bgd");
                 }
             }
