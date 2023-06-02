@@ -73,8 +73,8 @@ public class PlayState extends GameState {
 
 		keyH = new KeyHandler(this);
 		InputMultiplexer inputMultiplexer = new InputMultiplexer();
-		inputMultiplexer.addProcessor(ui.stage); // Adicione o stage do MobileControlUI
-		inputMultiplexer.addProcessor(keyH); // Adicione o KeyHandler
+		inputMultiplexer.addProcessor(ui.stage);
+		inputMultiplexer.addProcessor(keyH);
 
 		// Defina o InputMultiplexer como processador de entrada
 		Gdx.input.setInputProcessor(inputMultiplexer);
