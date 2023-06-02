@@ -15,7 +15,7 @@ import com.libgdx.game.playState.PlayState;
 public class UI {
 
     PlayState ps;
-    Stage stage;
+    public Stage stage;
     Viewport viewport;
 
     Label label;
@@ -38,8 +38,8 @@ public class UI {
         viewport = new ExtendViewport(1080, 600, new OrthographicCamera());
         stage = new Stage(viewport, sb);
 
-        dUI = new DebugUI(viewport, sb, style, this);
-        mcUI = new MobileControlUI(viewport, sb, ps, this);
+        dUI = new DebugUI(stage, sb, style, this);
+        mcUI = new MobileControlUI(stage, sb, ps, this);
     }
 
     public void render() {

@@ -12,19 +12,19 @@ public class DebugUI {
     public boolean showCollisionBox = false;
     UI ui;
     Stage stage;
+    SpriteBatch sb;
     Label framesPerSecond;
     Label deltaTime;
-    Label worldX;
-    Label worldY;
     Label col;
     Label row;
     Table table;
 
     public boolean showDebug = false;
 
-    public DebugUI(Viewport viewport, SpriteBatch sb, Label.LabelStyle style, UI ui) {
+    public DebugUI(Stage stage, SpriteBatch sb, Label.LabelStyle style, UI ui) {
         this.ui = ui;
-        stage = new Stage(viewport, sb);
+        this.stage = stage;
+        this.sb = sb;
         table = new Table();
         table.top();
         table.left();
@@ -54,7 +54,9 @@ public class DebugUI {
             deltaTime.setText("Tempo Delta: " + Gdx.graphics.getDeltaTime());
             col.setText("Coluna: " + ui.ps.worldX);
             row.setText("Fileira: " + ui.ps.worldY);
-            stage.draw();
+            sb.begin();
+            table.draw(stage.getBatch(), 1.0f);
+            sb.end();
         }
 
         if (showCollisionBox) {
@@ -68,5 +70,6 @@ public class DebugUI {
 
     public void dispose() {
         stage.dispose();
+        sb.dispose();
     }
 }

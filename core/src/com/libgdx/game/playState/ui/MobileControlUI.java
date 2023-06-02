@@ -26,12 +26,14 @@ public class MobileControlUI {
     public Rectangle b;
     Skin skin;
     ImageButton debugButton;
+    SpriteBatch sb;
     public Table table;
 
-    public MobileControlUI(Viewport viewport, SpriteBatch sb, final PlayState ps, UI ui) {
+    public MobileControlUI(Stage stage, SpriteBatch sb, final PlayState ps, UI ui) {
         this.ui = ui;
         this.ps = ps;
-        this.stage = new Stage(viewport, sb);
+        this.stage = stage;
+        this.sb = sb;
 
         atlas = new TextureAtlas(Gdx.files.internal("ui/mobileControls.atlas"));
         skin = new Skin(Gdx.files.internal("ui/mobileControls.json"), atlas);
@@ -80,7 +82,7 @@ public class MobileControlUI {
 
         debugButton.addListener(new InputListener() {
             private boolean isButtonPressed = false;
-            private int x;
+            private float touchDownX ;
             private int y;
 
             @Override
@@ -90,7 +92,7 @@ public class MobileControlUI {
                     isButtonPressed = true;
                 }
 
-                x = x;
+                touchDownX = x;
 
                 y = y;
 
@@ -100,7 +102,7 @@ public class MobileControlUI {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 // Se o botão estava sendo pressionado e o toque ocorreu no lado direito da tela e abaixo do botão
-                if (isButtonPressed && this.x >= table.getWidth() / 2 && this.y >= debugButton.getY() + 10) {
+                if (isButtonPressed && touchDownX >= stage.getViewport().getScreenWidth() / 2) {
                     // Ativa a função desejada
                     ui.dUI.showCollisionBox = !ui.dUI.showCollisionBox;
                 } else {
@@ -112,13 +114,14 @@ public class MobileControlUI {
             }
         });
 
-
         stage.addActor(table);
     }
 
     public void render () {
         stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw();
+        sb.begin();
+        table.draw(stage.getBatch(), 1.0f);
+        sb.end();
     }
 
     public void resize(int width, int height) {
@@ -129,6 +132,6 @@ public class MobileControlUI {
         stage.dispose();
         atlas.dispose();
         skin.dispose();
-
+        sb.dispose();
     }
 }

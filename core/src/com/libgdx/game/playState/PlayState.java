@@ -31,7 +31,7 @@ public class PlayState extends GameState {
 	public MapRender mapR;
 	public UI ui;
     public OrthographicCamera camera;
-	Viewport viewport;
+	public Viewport viewport;
 	SpriteBatch worldBatch;
 	public int worldX;
 	public int worldY;
@@ -56,7 +56,7 @@ public class PlayState extends GameState {
 		tileSize = 1;
 		worldWidth = main.wordlWidth;
 		worldHeight = main.worldHeight;
-		camera = new OrthographicCamera(worldWidth, worldHeight);
+		camera = new OrthographicCamera(1080, 600);
 		camera.update();
 		viewport = new ExtendViewport(worldWidth, worldHeight, camera);
 		viewport.apply();
@@ -73,7 +73,7 @@ public class PlayState extends GameState {
 
 		keyH = new KeyHandler(this);
 		InputMultiplexer inputMultiplexer = new InputMultiplexer();
-		inputMultiplexer.addProcessor(ui.mcUI.stage); // Adicione o stage do MobileControlUI
+		inputMultiplexer.addProcessor(ui.stage); // Adicione o stage do MobileControlUI
 		inputMultiplexer.addProcessor(keyH); // Adicione o KeyHandler
 
 		// Defina o InputMultiplexer como processador de entrada
